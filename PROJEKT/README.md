@@ -25,7 +25,7 @@ Model jest odizolowany od ogólnej wiedzy internetowej (posiada rygorystyczny *S
 
 ### Opcja A: Środowisko Google Colab (Zalecane)
 Ze względu na optymalizację sprzętową i wbudowane generowanie tunelu Gradio, zaleca się uruchomienie notatnika w chmurze:
-1. Otwórz plik `Admin_RAG_Project.ipynb` w środowisku Google Colab.
+1. Otwórz plik `V2-Admin_RAG_Project.ipynb` w środowisku Google Colab.
 2. **Ważne (Wydajność):** W górnym menu wejdź w `Środowisko wykonawcze` -> `Zmień typ środowiska wykonawczego` i wybierz akcelerator **T4 GPU**. Zapewni to natychmiastowe generowanie odpowiedzi.
 3. W panelu plików po lewej stronie upewnij się, że pliki tekstowe znajdują się w folderze `knowledge/` (skrypt potrafi je również zlokalizować w `sample_data/knowledge/`).
 4. Uruchom wszystkie 3 komórki kodu. Pierwsza z nich zainstaluje serwer Ollama i pobierze model w tle.
