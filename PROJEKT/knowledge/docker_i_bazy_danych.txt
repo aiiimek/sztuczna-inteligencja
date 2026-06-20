@@ -1,0 +1,20 @@
+DOKUMENTACJA DEPLOYMENTU: DOCKER I BAZY DANYCH
+Wersja: 1.1
+Dotyczy: Środowisko testowe i produkcyjne (Konteneryzacja)
+
+1. Podstawy uruchamiania kontenerów Docker
+Wszystkie bazy danych w środowisku testowym muszą być uruchamiane w odizolowanych kontenerach z podmontowanym lokalnym wolumenem (bind mount) w celu zachowania trwałości danych.
+Przykład uruchomienia bazy PostgreSQL 15:
+`docker run -d --name db-postgres-test -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=sekretne_haslo -e POSTGRES_DB=testowa_baza -p 5432:5432 -v /opt/docker_data/postgres:/var/lib/postgresql/data postgres:15-alpine`
+
+2. Oczyszczanie środowiska Docker
+W celu zapobiegania wyczerpaniu miejsca na dysku serwera, należy regularnie czyścić nieużywane obrazy, zatrzymane kontenery oraz wiszące wolumeny.
+- Usunięcie wszystkich nieużywanych zasobów: `docker system prune -a --volumes`
+- Zatrzymanie wszystkich działających kontenerów: `docker stop $(docker ps -aq)`
+
+3. Tworzenie kopii zapasowych baz danych (PostgreSQL)
+Kopie zapasowe baz uruchomionych w Dockerze wykonujemy używając narzędzia `pg_dump` bezpośrednio wewnątrz kontenera, przekierowując strumień wyjścia na maszynę hosta.
+Komenda tworzenia zrzutu bazy:
+`docker exec -t db-postgres-test pg_dump -U admin testowa_baza > /backup/testowa_baza_$(date +%F).sql`
+Odtwarzanie zrzutu:
+`cat /backup/testowa_baza_2023-10-25.sql | docker exec -i db-postgres-test psql -U admin testowa_baza`

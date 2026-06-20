@@ -1,0 +1,28 @@
+PODRĘCZNIK ADMINISTRATORA: SYSTEMY Z RODZINY LINUX (ARCH/DEBIAN)
+Wersja: 2.0
+Dotyczy: Serwery aplikacyjne i stacje robocze IT
+
+1. Zarządzanie pakietami (Arch Linux / pacman / yay)
+Podstawowym menedżerem pakietów jest `pacman`. W środowisku deweloperskim i administracyjnym dopuszcza się użycie AUR (Arch User Repository) za pomocą narzędzia `yay`.
+Kluczowe operacje:
+- Pełna aktualizacja systemu i repozytoriów: `sudo pacman -Syu` lub `yay -Syu`
+- Wyszukiwanie osieroconych pakietów (orphans): `pacman -Qdt`
+- Usuwanie osieroconych pakietów: `sudo pacman -Rns $(pacman -Qdtq)`
+- Czyszczenie pamięci podręcznej pobranych pakietów: `sudo pacman -Sc`
+
+2. Zarządzanie zaporą sieciową (UFW - Uncomplicated Firewall)
+Na stacjach roboczych i serwerach nienaruszalnych (np. bastion hosts) używamy UFW.
+Polityka domyślna: Blokowanie wszystkiego na wejściu (incoming), zezwalanie na wyjście (outgoing).
+Komendy wdrożeniowe:
+`sudo ufw default deny incoming`
+`sudo ufw default allow outgoing`
+Otwieranie portów (np. SSH z określonej podsieci administratorskiej):
+`sudo ufw allow from 10.10.5.0/24 to any port 22 proto tcp`
+Po konfiguracji należy aktywować zaporę: `sudo ufw enable`.
+
+3. Analiza logów systemowych (Systemd / Journalctl)
+W systemach opartych na systemd, logi czytamy używając `journalctl`.
+- Wyświetlanie logów dla konkretnej usługi (np. sshd): `journalctl -u sshd.service`
+- Wyświetlanie tylko dzisiejszych logów: `journalctl --since today`
+- Wyświetlanie logów jądra (dmesg): `journalctl -k`
+- Podgląd logów na żywo (tail): `journalctl -f`

@@ -1,0 +1,26 @@
+DOKUMENTACJA SIECIOWA: ROUTING I SWITCHING (CISCO)
+Wersja: 1.2
+Dotyczy: Infrastruktura brzegowa i szkieletowa
+
+1. Konfiguracja OSPF (Open Shortest Path First)
+W przypadku wdrażania nowego routera w strefie szkieletowej (Area 0), należy pamiętać o ustawieniu odpowiedniego Router ID oraz deklaracji sieci.
+Komendy konfiguracyjne:
+- Wejście w tryb konfiguracji OSPF: `router ospf 1`
+- Ustawienie Router ID: `router-id 10.0.0.1`
+- Deklaracja uczestnictwa sieci: `network 192.168.10.0 0.0.0.255 area 0`
+Uwaga: Koszt (cost) interfejsu dla łączy GigabitEthernet domyślnie wynosi 1. W przypadku użycia szybszych łączy (np. 10G) należy zmienić `auto-cost reference-bandwidth`.
+
+2. Zabezpieczenie portów (Port Security)
+Na wszystkich przełącznikach dostępowych (Access Layer) wymagane jest włączenie funkcji Port Security dla ochrony przed atakami typu MAC Flooding.
+Zasady:
+- Maksymalna liczba adresów MAC na port: 2
+- Akcja w przypadku naruszenia (violation): shutdown
+Komendy:
+`switchport mode access`
+`switchport port-security`
+`switchport port-security maximum 2`
+`switchport port-security violation shutdown`
+`switchport port-security mac-address sticky`
+
+3. VLAN i Trunking
+Porty łączące przełączniki ze sobą (uplinki) muszą być skonfigurowane jako 802.1Q trunk. Należy wyłączyć negocjację DTP komendą `switchport nonegotiate`. Natywny VLAN (VLAN nienagłówkowany) powinien być zmieniony z domyślnego VLAN 1 na VLAN 99.
