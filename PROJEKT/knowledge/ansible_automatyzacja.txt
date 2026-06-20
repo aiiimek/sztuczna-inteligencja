@@ -1,0 +1,19 @@
+AUTOMATYZACJA INFRASTRUKTURY: ANSIBLE
+Wersja: 2.4
+Dotyczy: Provisioning maszyn wirtualnych i zarządzanie konfiguracją (Configuration Management)
+
+1. Struktura i uruchamianie Playbooków
+Wszystkie operacje konfiguracyjne na serwerach aplikacyjnych wykonujemy bezagentowo za pomocą Ansible. Główne pliki inventory przechowujemy w formacie INI w katalogu `/etc/ansible/hosts`.
+- Uruchomienie playbooka na grupie serwerów "webservers":
+`ansible-playbook -i /etc/ansible/hosts deploy_web.yml --limit webservers`
+- Sprawdzenie składni (dry-run) bez wprowadzania zmian na docelowych hostach:
+`ansible-playbook deploy_web.yml --check`
+
+2. Moduły i typowe zadania (Tasks)
+Podczas pisania playbooków należy używać standardowych modułów zamiast modułu 'shell' lub 'command' (aby zachować idempotencję).
+- Aktualizacja cache i instalacja pakietu Nginx na systemach Debian/Ubuntu:
+`ansible webservers -m apt -a "name=nginx state=latest update_cache=yes" --become`
+- Kopiowanie pliku konfiguracyjnego z maszyny kontrolnej na węzły:
+`ansible all -m copy -a "src=/lokalne/repo/nginx.conf dest=/etc/nginx/nginx.conf owner=root mode=0644" --become`
+- Restart usługi Nginx i ustawienie jej autostartu:
+`ansible webservers -m systemd -a "name=nginx state=restarted enabled=yes" --become`

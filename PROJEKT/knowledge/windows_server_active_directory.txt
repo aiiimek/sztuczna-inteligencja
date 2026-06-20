@@ -1,0 +1,19 @@
+ADMINISTRACJA: WINDOWS SERVER I ACTIVE DIRECTORY (AD)
+Wersja: 1.3
+Dotyczy: Zarządzanie tożsamością i politykami GPO w środowisku korporacyjnym
+
+1. Zarządzanie Użytkownikami przez PowerShell
+Zamiast korzystać z GUI (Active Directory Users and Computers), masowe operacje wykonujemy z modułem ActiveDirectory w programie PowerShell.
+- Tworzenie nowego konta użytkownika z wymuszeniem zmiany hasła przy pierwszym logowaniu:
+`New-ADUser -Name "Jan Kowalski" -SamAccountName "jkowalski" -Department "IT" -ChangePasswordAtLogon $true -Enabled $true`
+- Dodawanie użytkownika do grupy zabezpieczeń "VPN_Users":
+`Add-ADGroupMember -Identity "VPN_Users" -Members "jkowalski"`
+- Odblokowywanie konta zablokowanego po błędnych próbach logowania:
+`Unlock-ADAccount -Identity "jkowalski"`
+
+2. Wymuszanie Replikacji i GPO
+W środowiskach z wieloma kontrolerami domeny (Domain Controllers), po dodaniu nowego użytkownika należy wymusić synchronizację między serwerami.
+W wierszu poleceń (cmd) z uprawnieniami administratora wpisujemy:
+`repadmin /syncall /A /e /d /P`
+Jeśli zmieniono zasady grupy (Group Policy Objects) i chcemy natychmiast zaaplikować je na docelowej stacji klienckiej (Windows 10/11), na komputerze użytkownika wykonujemy komendę:
+`gpupdate /force`

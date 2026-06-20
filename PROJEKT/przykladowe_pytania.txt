@@ -1,0 +1,27 @@
+Sieci i Bezpieczeństwo (Cisco & WireGuard)
+Pytanie 1: W jaki sposób mogę zabezpieczyć porty dostępowe na switchu przed atakami MAC Flooding tak, aby akceptowały maksymalnie 2 adresy MAC i od razu wyłączały port w razie naruszenia?
+
+Pytanie 2: Jak wygenerować klucze w VPN WireGuard i jaką komendą podnieść później interfejs wg0?
+
+Pytanie 3: Jak włączyć routing statyczny OSPF w obszarze zerowym i co muszę zrobić, jeśli używam interfejsów 10G?
+
+Linux, Kontenery i Bazy Danych (Arch, Docker, K8s)
+Pytanie 4: Jak używając menedżera pacman usunąć z systemu wszystkie osierocone pakiety?
+
+Pytanie 5: Mój pod w Kubernetesie ma status CrashLoopBackOff. Jak mogę sprawdzić jego logi w czasie rzeczywistym i wyświetlić eventy klastra?
+
+Pytanie 6: W jaki sposób zrobić pełny zrzut (backup) bazy danych PostgreSQL 15, która jest aktualnie uruchomiona wewnątrz kontenera Docker?
+
+Automatyzacja, Monitoring i Windows Server (Ansible, Prometheus, AD)
+Pytanie 7: Konto użytkownika jkowalski zostało zablokowane. Podaj mi komendę PowerShell do jego odblokowania, a następnie komendę, która wymusi replikację między kontrolerami domeny.
+
+Pytanie 8: Jak uruchomić playbook Ansible, aby tylko sprawdził składnię, ale nie wprowadzał żadnych fizycznych zmian na serwerach docelowych?
+
+Pytanie 9: Jakie zapytanie PromQL napisać, aby Grafana pokazała mi procentowe zużycie procesora z ostatnich 5 minut?
+
+Testy Odporności (Udowodnienie braku halucynacji)
+To są najważniejsze pytania na sam koniec prezentacji. Zadasz je, aby udowodnić prowadzącemu, że narzuciłeś modelowi rygorystyczny "System Prompt" i że asystent nie zmyśla (nie czerpie wiedzy z ogólnego internetu, tylko trzyma się Twoich plików).
+
+Pytanie 10: Jak skonfigurować routing BGP między dwoma routerami brzegowymi? (Model powinien odmówić, bo w dokumentacji mamy tylko OSPF).
+
+Pytanie 11: Jak zainstalować i skonfigurować serwer Apache HTTPD? (Model powinien odmówić, bo w pliku o Ansible wspominaliśmy tylko o Nginx).

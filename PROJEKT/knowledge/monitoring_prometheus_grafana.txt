@@ -1,0 +1,21 @@
+SYSTEMY MONITORINGU: PROMETHEUS I GRAFANA
+Wersja: 2.0
+Dotyczy: Zbieranie metryk i wizualizacja stanu infrastruktury
+
+1. Prometheus: Dodawanie nowych hostów
+Do monitorowania serwerów Linux wykorzystywany jest 'node_exporter'. Nowe targety należy dodać w pliku `prometheus.yml` w sekcji `scrape_configs`.
+Po zmianie pliku, aby Prometheus załadował konfigurację bez przerywania działania (zero-downtime), należy wysłać sygnał SIGHUP do procesu lub użyć API:
+`curl -X POST http://localhost:9090/-/reload`
+
+2. Język zapytań PromQL (Prometheus Query Language)
+W Grafanie tworzymy panele opierając się na zapytaniach PromQL.
+Kluczowe zapytania używane w naszym środowisku:
+- Obliczanie procentowego zużycia procesora (CPU) z ostatnich 5 minut:
+`100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)`
+- Sprawdzanie wolnego miejsca na partycji głównej (w Gigabajtach):
+`node_filesystem_free_bytes{mountpoint="/"} / 1024 / 1024 / 1024`
+- Ilość wolnej pamięci RAM (w procentach):
+`(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100`
+
+3. Alertmanager
+Powiadomienia o awariach są wysyłane na dedykowany kanał Slack. Reguły alertów zdefiniowane są w pliku `alerts.yml`. Krytyczny alert generowany jest, gdy użycie CPU przekracza 90% przez ponad 15 minut (klauzula `for: 15m`).

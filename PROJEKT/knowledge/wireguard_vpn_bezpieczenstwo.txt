@@ -1,0 +1,21 @@
+POLITYKA BEZPIECZEŃSTWA: KONFIGURACJA WIREGUARD VPN
+Wersja: 1.5
+Dotyczy: Zdalny dostęp pracowników (Remote Access) i tunele Site-to-Site
+
+1. Generowanie kluczy kryptograficznych
+WireGuard opiera się na kryptografii krzywych eliptycznych (Curve25519). Aby dodać nowego klienta (Peer), należy na serwerze wygenerować parę kluczy.
+Komenda do generowania:
+`wg genkey | tee privatekey | wg pubkey > publickey`
+Prywatny klucz zostaje na urządzeniu klienta, publiczny dodajemy do konfiguracji serwera.
+
+2. Konfiguracja interfejsu serwera (wg0.conf)
+Główny plik konfiguracyjny znajduje się w `/etc/wireguard/wg0.conf`. Należy pamiętać o włączeniu IP Forwarding w jądrze Linuxa, aby ruch przechodził do sieci LAN.
+Komenda włączająca forwarding: `sysctl -w net.ipv4.ip_forward=1`
+Po zedytowaniu pliku konfiguracyjnego podnosimy interfejs komendą:
+`wg-quick up wg0`
+Aby usługa uruchamiała się wraz ze startem systemu:
+`systemctl enable wg-quick@wg0`
+
+3. Diagnostyka połączenia
+Aby sprawdzić aktualny status tunelu, połączonych klientów oraz ilość przetransferowanych danych, należy jako root wykonać komendę:
+`wg show`

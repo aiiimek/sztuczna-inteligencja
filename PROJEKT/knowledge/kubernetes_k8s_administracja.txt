@@ -1,0 +1,21 @@
+DOKUMENTACJA INFRASTRUKTURY: KUBERNETES (K8S)
+Wersja: 3.1
+Dotyczy: Orkiestracja kontenerów na środowiskach PROD i DEV
+
+1. Diagnostyka Podów (Troubleshooting)
+W przypadku statusu "CrashLoopBackOff" lub "Pending", należy przeprowadzić diagnostykę przed restartem deploymentu.
+Kluczowe komendy diagnostyczne (kubectl):
+- Sprawdzenie eventów klastra: `kubectl get events --sort-by=.metadata.creationTimestamp`
+- Szczegółowe informacje o podzie (szukanie błędów montowania wolumenów lub braku zasobów): `kubectl describe pod <nazwa_poda> -n <namespace>`
+- Podgląd logów kontenera w czasie rzeczywistym: `kubectl logs -f <nazwa_poda> -n <namespace>`
+- Jeżeli pod ma wiele kontenerów, dodajemy flagę `-c`: `kubectl logs <nazwa_poda> -c <nazwa_kontenera>`
+
+2. Skalowanie i Zarządzanie Deploymentem
+- Ręczne skalowanie deploymentu (np. do 5 replik) w przypadku wzmożonego ruchu:
+`kubectl scale deployment <nazwa_deploymentu> --replicas=5 -n <namespace>`
+- Wymuszenie restartu wszystkich podów w deploymencie (np. po zmianie ConfigMap):
+`kubectl rollout restart deployment <nazwa_deploymentu> -n <namespace>`
+
+3. Dostęp do usług (Port-Forwarding)
+Aby dostać się tymczasowo do usługi wewnątrz klastra bez konfiguracji Ingressa (np. do bazy danych z lokalnego hosta):
+`kubectl port-forward svc/<nazwa_uslugi> 5432:5432 -n <namespace>`
